@@ -1,63 +1,64 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace BobsBookstoreClassic.Data
 {
+    /// <summary>
+    /// Static configuration accessor for Bookstore settings.
+    /// Must be initialized with Initialize(IConfiguration) at application startup (in Program.cs).
+    /// </summary>
     public sealed class BookstoreConfiguration
     {
-        private static readonly Lazy<BookstoreConfiguration> Lazy = new Lazy<BookstoreConfiguration>(() => new BookstoreConfiguration());
+        private static IConfiguration _configuration;
+        private static readonly Dictionary<string, string> _overrides = new();
 
-        private static BookstoreConfiguration Instance => Lazy.Value;
-
-        private readonly Dictionary<string, string> _appSettings = new Dictionary<string, string>();
-        private readonly Dictionary<string, string> _connectionStrings = new Dictionary<string, string>();
-
-        private BookstoreConfiguration()
+        /// <summary>
+        /// Initialize from ASP.NET Core IConfiguration. Call once at startup.
+        /// </summary>
+        public static void Initialize(IConfiguration configuration)
         {
-            foreach (string key in ConfigurationManager.AppSettings)
-            {
-                _appSettings[key] = ConfigurationManager.AppSettings[key];
-
-                if (Environment.GetEnvironmentVariable(key) != null)
-                {
-                    _appSettings[key] = Environment.GetEnvironmentVariable(key);
-                }
-            }
-
-            foreach (ConnectionStringSettings connectionStringSettings in ConfigurationManager.ConnectionStrings)
-            {
-                _connectionStrings[connectionStringSettings.Name] = connectionStringSettings.ConnectionString;
-
-            }
+            _configuration = configuration;
         }
 
         public static void AddSetting(string key, string value)
         {
-            Instance._appSettings[key] = value;
+            _overrides[key] = value;
         }
 
         public static string GetSetting(string key)
         {
-            return Instance._appSettings[key];
+            if (_overrides.TryGetValue(key, out var overrideValue))
+                return overrideValue;
+
+            if (_configuration == null)
+                throw new InvalidOperationException("BookstoreConfiguration has not been initialized. Call Initialize(IConfiguration) at startup.");
+
+            // Support both flat key "Services/Authentication" and nested "Services:Authentication"
+            var normalizedKey = key.Replace('/', ':');
+            return _configuration[normalizedKey] ?? string.Empty;
         }
 
         public static T GetSetting<T>(string key)
         {
-            var value = Instance._appSettings[key];
-
+            var value = GetSetting(key);
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
         public static void AddConnectionString(string key, string value)
         {
-            Instance._connectionStrings[key] = value;
+            _overrides[$"ConnectionStrings:{key}"] = value;
         }
 
         public static string GetConnectionString(string key)
         {
-            return Instance._connectionStrings[key];
-        }
+            if (_overrides.TryGetValue($"ConnectionStrings:{key}", out var overrideValue))
+                return overrideValue;
 
+            if (_configuration == null)
+                throw new InvalidOperationException("BookstoreConfiguration has not been initialized. Call Initialize(IConfiguration) at startup.");
+
+            return _configuration.GetConnectionString(key) ?? string.Empty;
+        }
     }
 }

@@ -1,13 +1,5 @@
-﻿using System.Web.Mvc;
-
+// Filter configuration has been migrated to Program.cs and individual controller attributes.
+// This file is kept as a placeholder.
 namespace Bookstore.Web
 {
-    public class FilterConfig
-    {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-        {
-            filters.Add(new HandleErrorAttribute());
-            filters.Add(new AuthorizeAttribute());
-        }
-    }
 }

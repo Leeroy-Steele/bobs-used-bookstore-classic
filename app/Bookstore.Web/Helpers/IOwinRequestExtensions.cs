@@ -1,12 +1,5 @@
-﻿using Microsoft.Owin;
-
+// IOwinRequestExtensions has been removed - OWIN is replaced by ASP.NET Core middleware.
+// Redirect URI generation is now handled in Program.cs OpenIdConnect events.
 namespace Bookstore.Web.Helpers
 {
-    public static class OwinRequestExtensions
-    {
-        public static string GetReturnUrl(this IOwinRequest request)
-        {
-            return $"{request.Scheme}://{request.Host}/signin-oidc";
-        }
-    }
 }
