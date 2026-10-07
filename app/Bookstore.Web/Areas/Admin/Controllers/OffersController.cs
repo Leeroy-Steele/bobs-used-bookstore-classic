@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using System.Web.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Bookstore.Domain.Offers;
 using Bookstore.Domain.ReferenceData;
 using Bookstore.Web.Areas.Admin.Models.Offers;
@@ -21,7 +21,6 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         {
             var offers = await offerService.GetOffersAsync(filters, pageIndex, pageSize);
             var referenceData = await referenceDataService.GetAllReferenceDataAsync();
-
             return View(new OfferIndexViewModel(offers, referenceData));
         }
 
@@ -52,11 +51,8 @@ namespace Bookstore.Web.Areas.Admin.Controllers
         private async Task<ActionResult> UpdateOfferStatus(int id, OfferStatus status, string message)
         {
             var dto = new UpdateOfferStatusDto(id, status);
-
             await offerService.UpdateOfferStatusAsync(dto);
-
             TempData["Message"] = message;
-
             return RedirectToAction("Index");
         }
     }
