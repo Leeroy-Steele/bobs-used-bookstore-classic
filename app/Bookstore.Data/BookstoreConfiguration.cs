@@ -56,7 +56,14 @@ namespace BobsBookstoreClassic.Data
 
         public static string GetConnectionString(string key)
         {
-            return Instance._connectionStrings[key];
+            Instance._connectionStrings.TryGetValue(key, out var value);
+            return value;
+        }
+
+        public static string TryGetSetting(string key)
+        {
+            Instance._appSettings.TryGetValue(key, out var value);
+            return value;
         }
 
     }

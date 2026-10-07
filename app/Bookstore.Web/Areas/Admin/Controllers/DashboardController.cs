@@ -1,9 +1,9 @@
-﻿using Bookstore.Domain.Books;
+using Bookstore.Domain.Books;
 using Bookstore.Domain.Offers;
 using Bookstore.Domain.Orders;
 using Bookstore.Web.Areas.Admin.Models.Dashboard;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bookstore.Web.Areas.Admin.Controllers
 {
@@ -32,11 +32,9 @@ namespace Bookstore.Web.Areas.Admin.Controllers
                 PendingOrders = orderStats.PendingOrders,
                 OrdersThisMonth = orderStats.OrdersThisMonth,
                 OrdersTotal = orderStats.OrdersTotal,
-
                 PendingOffers = offerStats.PendingOffers,
                 OffersThisMonth = offerStats.OffersThisMonth,
                 OffersTotal = offerStats.OffersTotal,
-
                 LowStock = inventoryStats.LowStock,
                 OutOfStock = inventoryStats.OutOfStock,
                 StockTotal = inventoryStats.StockTotal
