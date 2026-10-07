@@ -8,8 +8,7 @@
     <h1>Create / Update Address</h1>
     <br />
 
-    @using (Html.BeginForm())
-    {
+    <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
@@ -50,11 +49,9 @@
                 <a class="btn" href="@Model.ReturnUrl">Cancel</a>
             </div>
         </center>
-    }
+    </form>
 </div>
 
 @section Scripts {
-    @{
-        Html.RenderPartial("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
