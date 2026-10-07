@@ -1,34 +1,5 @@
-﻿using BobsBookstoreClassic.Data;
-using Bookstore.Common;
-using NLog;
-using NLog.AWS.Logger;
-using NLog.Config;
-using NLog.Targets;
-
+// Logging configuration has been migrated to Program.cs and nlog.config.
+// This file is kept as a placeholder.
 namespace Bookstore.Web
 {
-    public static class LoggingSetup
-    {
-        public static void ConfigureLogging()
-        {
-            var config = new LoggingConfiguration();
-
-            Target loggingTarget;
-
-            if (BookstoreConfiguration.GetSetting("Services/LoggingService") == "aws")
-            {
-                loggingTarget = new AWSTarget { LogGroup = Constants.AppName };
-            }
-            else
-            {
-                loggingTarget = new DebuggerTarget();
-            }
-
-            config.AddTarget("aws", loggingTarget);
-
-            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Info, loggingTarget));
-
-            LogManager.Configuration = config;
-        }
-    }
 }

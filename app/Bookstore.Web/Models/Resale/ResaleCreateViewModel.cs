@@ -1,7 +1,7 @@
-﻿using Bookstore.Domain.ReferenceData;
+using Bookstore.Domain.ReferenceData;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 namespace Bookstore.Web.ViewModel.Resale
 {
@@ -17,28 +17,19 @@ namespace Bookstore.Web.ViewModel.Resale
             Conditions = referenceDataItems.Where(x => x.DataType == ReferenceDataType.Condition).Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Text });
         }
 
-        public IEnumerable<SelectListItem> BookTypes { get; internal set; }
-
-        public IEnumerable<SelectListItem> Publishers { get; internal set; }
-
-        public IEnumerable<SelectListItem> Genres { get; internal set; }
-
-        public IEnumerable<SelectListItem> Conditions { get; internal set; }
+        public IEnumerable<SelectListItem> BookTypes { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> Publishers { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> Genres { get; set; } = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> Conditions { get; set; } = new List<SelectListItem>();
 
         public int SelectedBookTypeId { get; set; }
-
         public int SelectedPublisherId { get; set; }
-
         public int SelectedGenreId { get; set; }
-
         public int SelectedConditionId { get; set; }
 
         public decimal BookPrice { get; set; }
-
         public string BookName { get; set; }
-
         public string Author { get; set; }
-
         public string ISBN { get; set; }
     }
 }
